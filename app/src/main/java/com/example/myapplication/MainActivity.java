@@ -215,6 +215,66 @@ public class MainActivity extends AppCompatActivity {
             }
         }
 
+        @Override
+        public void onServicesDiscovered( BluetoothGatt _gatt, int _status ) {
+            super.onServicesDiscovered( _gatt, _status );
+            // check if the discovery failed
+            if( _status != BluetoothGatt.GATT_SUCCESS ) {
+                Log.e( TAG, "Device service discovery failed, status: " + _status );
+                return;
+            }
+            // find discovered characteristics
+            List<BluetoothGattCharacteristic> matching_characteristics= BluetoothUtils.findBLECharacteristics( _gatt );
+            if( matching_characteristics.isEmpty() ) {
+                Log.e( TAG, "Unable to find characteristics" );
+                return;
+            }
+            // log for successful discovery
+            Log.d( TAG, "Services discovery is successful" );
+        }
+
+        @Override
+        public void onCharacteristicChanged( BluetoothGatt _gatt, BluetoothGattCharacteristic _characteristic ) {
+            super.onCharacteristicChanged( _gatt, _characteristic );
+
+            Log.d( TAG, "characteristic changed: " + _characteristic.getUuid().toString() );
+            readCharacteristic( _characteristic );
+        }
+
+        @Override
+        public void onCharacteristicWrite( BluetoothGatt _gatt, BluetoothGattCharacteristic _characteristic, int _status ) {
+            super.onCharacteristicWrite( _gatt, _characteristic, _status );
+            if( _status == BluetoothGatt.GATT_SUCCESS ) {
+                Log.d( TAG, "Characteristic written successfully" );
+            } else {
+                Log.e( TAG, "Characteristic write unsuccessful, status: " + _status) ;
+                disconnectGattServer();
+            }
+        }
+
+        @Override
+        public void onCharacteristicRead(BluetoothGatt gatt, BluetoothGattCharacteristic characteristic, int status) {
+            super.onCharacteristicRead(gatt, characteristic, status);
+            if (status == BluetoothGatt.GATT_SUCCESS) {
+                Log.d (TAG, "Characteristic read successfully" );
+                readCharacteristic(characteristic);
+            } else {
+                Log.e( TAG, "Characteristic read unsuccessful, status: " + status);
+                // Trying to read from the Time Characteristic? It doesnt have the property or permissions
+                // set to allow this. Normally this would be an error and you would want to:
+                // disconnectGattServer();
+            }
+        }
+
+        /*
+        Log the value of the characteristic
+        @param characteristic
+         */
+        private void readCharacteristic( BluetoothGattCharacteristic _characteristic ) {
+            byte[] msg= _characteristic.getValue();
+            Log.d( TAG, "read: " + msg.toString() );
+        }
+
     }
     public void disconnectGattServer(){//연결 종료 시
         Log.d(TAG, "Closing Gatt connection");
