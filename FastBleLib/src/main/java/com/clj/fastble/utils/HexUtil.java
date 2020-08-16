@@ -99,7 +99,6 @@ public class HexUtil {
         if (hexString == null || hexString.equals("")) {
             return null;
         }
-        hexString = hexString.trim();
         hexString = hexString.toUpperCase();
         int length = hexString.length() / 2;
         char[] hexChars = hexString.toCharArray();

@@ -45,6 +45,7 @@ public class Sleepdoc_10_min_data_type {
         setS_tick(s_tick);
         offset += s_tick.length;
         Date now = new Date( this.s_tick);
+
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
         Log.i("data", "s_tick : " + this.s_tick);
         Log.i("data", "s_tick_date : " + sdf.format(now));

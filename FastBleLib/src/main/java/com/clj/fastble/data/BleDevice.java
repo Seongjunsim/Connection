@@ -12,6 +12,7 @@ public class BleDevice implements Parcelable {
     private byte[] mScanRecord;
     private int mRssi;
     private long mTimestampNanos;
+    private String deviceVersion;
 
     public BleDevice(BluetoothDevice device) {
         mDevice = device;
@@ -106,4 +107,11 @@ public class BleDevice implements Parcelable {
         this.mTimestampNanos = timestampNanos;
     }
 
+    public String getDeviceVersion() {
+        return deviceVersion;
+    }
+
+    public void setDeviceVersion(String deviceVersion) {
+        this.deviceVersion = deviceVersion;
+    }
 }
