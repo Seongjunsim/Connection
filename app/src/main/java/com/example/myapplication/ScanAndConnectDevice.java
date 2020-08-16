@@ -84,6 +84,7 @@ public class ScanAndConnectDevice extends AppCompatActivity {
     private BluetoothAdapter ble_adapter_; // 블루트스 어뎁터
     private boolean is_scanning_ = false; // 스캔중인지 확인하는 불
     private boolean connected_ = false;
+    private int num=0;
 
     private Map<String, BluetoothDevice> scan_results_; // 스캔된 기기값들 저장하는 배열 -> 중복 저장 가능
     private ScanCallback scan_cb_; // 스캔 할 때 일어나는 경우의 수에 대한 행동을 저장
